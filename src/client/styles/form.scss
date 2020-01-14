@@ -1,0 +1,37 @@
+$primary-color: #104D82;
+$light: #efefef;
+$mainfonts: Arial, Helvetica, sans-serif;
+$cta: #C3CF0E;
+
+form {
+    border: 1px solid #545454;
+    border-radius: 3px;
+    padding: 40px;
+
+    #article-input{
+        width: 100%;
+    }
+
+    #submit{
+        background-color: $cta;
+        font-family: $mainfonts;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 4px;
+        padding: 10px;
+    }
+
+    #error-flag{
+        color: red;
+    }
+}
+
+input {
+    padding: 5px 20px;
+    width: 100%;
+    line-height: 16px;
+    margin: 10px 0;
+
+}
+
+
