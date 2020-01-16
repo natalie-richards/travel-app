@@ -3,10 +3,10 @@ $light: #efefef;
 $mainfonts: Arial, Helvetica, sans-serif;
 $cta: #C3CF0E;
 
-form {
-    border: 1px solid #545454;
-    border-radius: 3px;
-    padding: 40px;
+form#text-input {
+    display: flex;
+    max-width: 800px;
+    margin: auto;
 
     #article-input{
         width: 100%;

@@ -1,52 +1,11 @@
-$primary-color: #104D82;
-$light: #efefef;
+$primary-color: #00A9F0;
+$light: #fff;
 $mainfonts: Arial, Helvetica, sans-serif;
 $cta: #C3CF0E;
 
 body {
-    min-height: 100vh;
+    min-height: 700px;
     background-color: $light;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    #main {
-        display: flex;
-        max-width: 940px;
-        margin: 50px auto;
-    }
-
-    #input{
-        width: 75%;
-
-        h2{
-            font-size: 24px;
-            font-family: $mainfonts;
-            margin-bottom: 8px;
-            line-height: 1em;
-        }
-
-        p{
-            font-size: 16px;
-            font-family: $mainfonts;  
-            line-height: 1.4em;
-            margin-bottom: 2%;
-        }
-    }
-
-    #results{
-        width: 25%;
-        padding-top: 88px;
-    }
-
-        .entry{
-            font-size: 18px;
-            font-family: $mainfonts;
-            line-height: 1.5em;
-            margin: 0 5%;  
-        }
-
-        strong{
-            font-weight: bold;
-        }
+    display: grid;
+    grid-template-rows: 60px 1fr 30px;
 }

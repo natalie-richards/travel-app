@@ -1,8 +1,28 @@
+const geoNames = 'http://api.geonames.org/searchJSON?q=';
+const userName = 'natatat31';
+let longLatData = [];
 
-const postData = async ( url = '', data)=>{
+let time = document.getElementById('date-search').value;
+console.log(time);
 
-    let textInput = document.getElementById('article-input').value;
-    console.log(textInput);
+//get API data
+const getLongLat = async (geoNames, city, user)=>{
+
+    const res = await fetch(geoNames + city + '&maxRows=10&cities=cities1000&username=' + userName)
+    try {
+  
+      const longLat = await res.json();
+      console.log(longLat)
+        
+      return longLat;
+    }  catch(error) {
+      console.log("error", error);
+      // appropriately handle the error
+    }
+};
+
+
+const postLongLat = async ( url = '', data = {})=>{
 
     const response = await fetch(url, {
     method: 'POST', 
@@ -14,45 +34,85 @@ const postData = async ( url = '', data)=>{
   });
   try {
     const newData = await response.json();
-    console.log(newData);
-    document.getElementById('results').innerHTML = "";
-
-        let entry = document.createElement('div');
-        entry.setAttribute('class', 'entry');
-
-        let confidence = newData.polarity_confidence
-        let percent = confidence * 100;
-        let roundPercent = Math.round(percent);
-
-        entry.innerHTML = 'This text is percieved as <strong>' + newData.polarity + '</strong> with ' + roundPercent + '% confidence';
-        document.getElementById('results').append(entry);
-    
+    // console.log(newData);
     return newData;
+
   }catch(error) {
-  console.log("error", error)
+    console.log("error", error)
   }
 }
 
+const getLongLatResponse = async ()=>{
 
+    const request = await fetch('/getLongLat')
+
+    try {
+        const firstData = await request.json();
+
+        longLatData.push(firstData[0]);
+        
+        return firstData;
+    
+    } catch(error) {
+        console.log("error", error)
+    }
+};
+
+
+// const getWeather = async ()=>{
+//     console.log(longLatData);
+
+
+
+//     const res = await fetch(darkSky + key + '/' + lat + ',' + long , { mode: 'no-cors' })
+//     console.log(res)
+    
+//     try {
+//         const weatherData = await res.json();
+//         return weatherData;
+
+//     } catch(error) {
+
+//     }
+// };
 
 
 function apiCall(event) {
     event.preventDefault();
-    const textInput = document.getElementById('article-input').value;
-    if (textInput === ""){
-        let errorMessage = document.createElement('p');
-        errorMessage.id = "error-flag";
-        errorMessage.innerHTML = "Please enter in text";
-        document.getElementById('text-input').append(errorMessage);
-    }
     
-        postData('/add', {
-        text: textInput
+    const citySearch = document.getElementById('city-search').value;
+    // console.log(citySearch);
+    
+    getLongLat(geoNames, citySearch, userName)
+        
+        .then(function(data){
+    
+            postLongLat('/addLongLat', {  
+                city: data.geonames[0].name, 
+                state: data.geonames[0].adminCode1, 
+                country: data.geonames[0].countryName,
+                lng:  data.geonames[0].lng,
+                lat:  data.geonames[0].lat
             }
-        )
+
+        );
+    
+    })
+        .then(function(data){
+        
+            getLongLatResponse()
+
+    })
+    //     .then(function(data){
+            
+    //         getWeather()
+
+    // })
 }
 
 
 
-export { apiCall
-        }
+
+
+
+export { apiCall }

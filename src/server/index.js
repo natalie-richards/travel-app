@@ -1,15 +1,15 @@
 // Setup empty JS object to act as endpoint for all routes
-const sentimentData = {};
+const cityData = {};
 
 var path = require('path')
 const express = require('express')
 var bodyParser = require('body-parser')
 var cors = require('cors')
 const dotenv = require('dotenv')
+const fetch = require("node-fetch")
 
 //used to hide API key
 dotenv.config();
-
 
 // Start up an instance of app
 const app = express()
@@ -27,44 +27,61 @@ app.use(bodyParser.urlencoded({
 app.use(express.static('dist'))
 
 // console.log(__dirname)
+let url = '';
 
-//connect to aylien API
-  var AYLIENTextAPI = require("aylien_textapi");
-
-  let textapi = new AYLIENTextAPI({
-      application_id: process.env.API_ID,
-      application_key: process.env.API_KEY
-    });
-  
-
-
-const textEntries = [];
+const cityResults = [];
   //post route adds entry 
 
-app.post('/add', addEntry);
+  app.post('/addLongLat', addLongLat);
 
-  function addEntry(req,res){
-    // console.log(req.body);
-    textEntry = {
-        text: req.body.text
-    };
+function addLongLat(req,res){
+
+    newTrip = {
+      city: req.body.city,
+      state: req.body.state,
+      country: req.body.country,
+      long: req.body.lng,
+      lat: req.body.lat
+    }
   
-    // textEntries.push(textEntry)
-    // console.log(textEntries);
+    cityResults.push(newTrip);
+    res.send(cityResults)
+    console.log(cityResults);
+
+    let long = cityResults[0].long;
+    let lat = cityResults[0].lat;
+
+    let darkSky = 'https://api.darksky.net/forecast/';
+    let API_OPTIONS = {
+      headers: { accept: 'application/json' },
+      auth: {
+        username: process.env.API_KEY,
+      },
+    };
+
+    url = darkSky + process.env.API_KEY + '/' + lat + ',' + long
+  console.log(url);
 
 
-    textapi.sentiment({
-        'text': textEntry.text,
-        'mode' : 'document'
-      }, function(error, response) {
-        if (error === null) {
-          // console.log(response);
-          textEntries.push(response)
-          res.send(response)
-          console.log(textEntries);
-        }
-      });
+  fetch(url)
+  .then(response => response.json() )
+    .then(result => console.log(result) )
+    .catch(error => console.log("error") );
+
   }
+ 
+
+
+
+  app.get('/getLongLat', getData) 
+  function getData (req, res){
+    res.send(cityResults);
+    console.log(cityResults);
+  }
+
+
+
+  
 
 
 

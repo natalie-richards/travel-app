@@ -15,26 +15,28 @@
         </div>
         </header>
 
-            <section id="main">
-                <div id="input">
-                    <div id="instructions">
-                        <h2>Instructions</h2>
-                        <p>Copy and paste an article text in to the area to find out if the sentiment is positive or negative.</p>
-                    </div>
-                    <form id="text-input" onsubmit="return Client.apiCall(event)">
-                        <textarea id="article-input" type="text" name="input" placeholder="Paste Here" rows="20"></textarea>
-                        <input id="submit" type="submit" name="" value="Submit">
-                    </form>
-                </div>
-                <div id="results">
-                </div>
-            </section>
+        <section id="search">
+            <form id="text-input" onsubmit="return Client.apiCall(event)">
+                <input type="text" id="city-search" name="city-search" placeholder="City, State">
+                <input type="date" id="date-search" name="date-search" placeholder="01/21/2020">
+                <input id="search-button" type="submit" name="" value="Start a Trip">
+            </form>
+            
+        </section>
+        
+        <section id="search-results">
+
+        </section>
+
+        <section id="trip-info">
+
+        </section>
 
         <footer>
             <p>This is a footer</p>
         </footer>
 
-      <script>
+      <!-- <script>
             // Check that service workers are supported
             if ('serviceWorker' in navigator) {
                 // Use the window load event to keep the page load performant
@@ -42,7 +44,7 @@
                     navigator.serviceWorker.register('/service-worker.js');
                 });
             }
-        </script>
+        </script> -->
 
     </body>
 </html>
