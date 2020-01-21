@@ -1,11 +1,19 @@
 const geoNames = 'http://api.geonames.org/searchJSON?q=';
 const userName = 'natatat31';
 let longLatData = [];
+let weatherData = [];
 
-let time = document.getElementById('date-search').value;
-console.log(time);
 
-//get API data
+
+
+function toUNIX(date){
+    var convert = Date.parse(date);
+    console.log(convert/1000);
+    return convert/1000;
+}
+
+
+//Initial API call to return longitude and latitude for searched city
 const getLongLat = async (geoNames, city, user)=>{
 
     const res = await fetch(geoNames + city + '&maxRows=10&cities=cities1000&username=' + userName)
@@ -16,12 +24,36 @@ const getLongLat = async (geoNames, city, user)=>{
         
       return longLat;
     }  catch(error) {
-      console.log("error", error);
-      // appropriately handle the error
+        console.log("error", error);
     }
 };
 
 
+const getPic = async (city)=>{
+
+    const res = await fetch('https://pixabay.com/api/?key=14915160-98070184f300f226a30c7897b&q=' + city + '&image_type=photo')
+    try {
+  
+      const picData = await res.json();
+      console.log(picData);
+
+      let placeholder = document.getElementById('placeholder');
+
+      if (document.body.contains(placeholder)){
+        placeholder.remove();
+      }
+      let cityPic = document.getElementById('city-photo-container');
+      cityPic.innerHTML = '<img class="city-pic" src="' + picData.hits[0].largeImageURL +'"/>';
+
+      document.getElementById('results').style.backgroundColor = ('#fff');
+        
+      return picData;
+    }  catch(error) {
+        console.log("error", error);
+    }
+};
+
+//Send data to server for additonal API call
 const postLongLat = async ( url = '', data = {})=>{
 
     const response = await fetch(url, {
@@ -34,7 +66,7 @@ const postLongLat = async ( url = '', data = {})=>{
   });
   try {
     const newData = await response.json();
-    // console.log(newData);
+ 
     return newData;
 
   }catch(error) {
@@ -42,6 +74,8 @@ const postLongLat = async ( url = '', data = {})=>{
   }
 }
 
+
+//Get initial data to display
 const getLongLatResponse = async ()=>{
 
     const request = await fetch('/getLongLat')
@@ -49,9 +83,47 @@ const getLongLatResponse = async ()=>{
     try {
         const firstData = await request.json();
 
-        longLatData.push(firstData[0]);
-        
-        return firstData;
+        longLatData.unshift(firstData[0]);
+
+        //fill in trip info
+
+        let docCity = document.getElementById('destination');
+        let docDate = document.getElementById('trip-date');
+        docCity.innerHTML = longLatData[0].city + ', ' + longLatData[0].country;
+        docDate.innerHTML = 'Departing on: ' + longLatData[0].date;
+
+        //countdown
+
+        const day = 1000 * 60 * 60 * 24;
+        let date = longLatData[0].date + ' 00:00:00';
+        let countDown = new Date(date).getTime();
+        let now = new Date().getTime();
+        let distance = countDown - now;
+
+        document.getElementById('countdown').innerText = Math.floor(distance / (day)) + ' days left!';
+  
+        return longLatData;
+    
+    } catch(error) {
+        console.log("error", error)
+    }
+};
+
+const getWeatherResponse = async ()=>{
+
+    const request = await fetch('/getWeather')
+
+    try {
+        const fullData = await request.json();
+
+        weatherData.unshift(fullData);
+        console.log(weatherData);
+
+
+        let docTemp = document.getElementById('temp');
+        docTemp.innerHTML = 'The weather typically ranges from ' + weatherData[0][0].daily.data[0].temperatureLow + '&deg;F  to ' + weatherData[0][0].daily.data[0].temperatureHigh + '&deg;F ';
+    
+        return fullData;
     
     } catch(error) {
         console.log("error", error)
@@ -59,31 +131,44 @@ const getLongLatResponse = async ()=>{
 };
 
 
-// const getWeather = async ()=>{
-//     console.log(longLatData);
+function addToDoList(){
+    //add notes area with event listener
+    let notesButton = document.createElement('button');
+    notesButton.setAttribute('id', 'note-button');
+    notesButton.innerHTML = "Add Acitivity List";
+    document.getElementById('results').append(notesButton);
 
+    document.getElementById('note-button').addEventListener('click', showNotes);
 
+} 
 
-//     const res = await fetch(darkSky + key + '/' + lat + ',' + long , { mode: 'no-cors' })
-//     console.log(res)
+function showNotes(e){
+    e.preventDefault();
+
+    document.getElementById('note-button').remove();
     
-//     try {
-//         const weatherData = await res.json();
-//         return weatherData;
+    var listEntry = document.createElement('form');
+    listEntry.setAttribute('id', 'list-area');
+    listEntry.innerHTML = '<input type="text" id="list-item" name="list-item" placeholder="To-do Item">';
+    
+    document.getElementById('note-area').append(listEntry);
+}
 
-//     } catch(error) {
 
-//     }
-// };
 
 
 function apiCall(event) {
     event.preventDefault();
     
     const citySearch = document.getElementById('city-search').value;
+    let date = document.getElementById('date-search').value;
+    let timeStamp = toUNIX(date);
+
+ 
     // console.log(citySearch);
-    
+    getPic(citySearch)
     getLongLat(geoNames, citySearch, userName)
+ 
         
         .then(function(data){
     
@@ -92,22 +177,25 @@ function apiCall(event) {
                 state: data.geonames[0].adminCode1, 
                 country: data.geonames[0].countryName,
                 lng:  data.geonames[0].lng,
-                lat:  data.geonames[0].lat
+                lat:  data.geonames[0].lat,
+                time: timeStamp,
+                date: date
             }
 
         );
     
-    })
-        .then(function(data){
+    }).then(function(data){
         
             getLongLatResponse()
 
+    }).then(function(data){
+            setTimeout (function(){
+                getWeatherResponse()
+            }, 750)
+    }).then(function(data){
+        addToDoList()
     })
-    //     .then(function(data){
-            
-    //         getWeather()
 
-    // })
 }
 
 

@@ -1,11 +1,95 @@
 $primary-color: #00A9F0;
 $light: #fff;
-$mainfonts: Arial, Helvetica, sans-serif;
+$headings: 'Yanone Kaffeesatz', sans-serif;
+$bodyfont: 'Open Sans', sans-serif;
 $cta: #C3CF0E;
 
 body {
     min-height: 700px;
     background-color: $light;
     display: grid;
-    grid-template-rows: 60px 1fr 30px;
+    grid-template-rows: 60px 450px 1fr;
+    font-family: $bodyfont;
+    font-size: 18px;
+
+    h1,
+    h2,
+    h3{
+        font-family: $headings;
+    }
+
+    h1{
+        font-size: 72px;
+        padding-top: 10%;
+        text-align:center;
+        color: $light;
+    }
+
+    h2{
+        font-size: 28px;
+    }
+
+    h3{
+        font-size: 24px; 
+    }
+
+
+    #content-container{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        background-image: url('http://i.imgur.com/sdn9qh0.jpg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        padding: 10% 0;
+    }
+        #search{
+            width: 30%;
+            padding: 3%;
+            // background-color: rgba(255, 255, 255, 0.5);
+
+        }
+
+            form#text-input{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                background-color: #efefef;
+                padding: 10% 5%;
+                border-radius: 4%;
+            }
+   
+        #results{
+            padding: 3%;
+            width: 60%;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            // background-color: rgba(255, 255, 255, 0.5);
+        }
+            #trip-details{             
+                padding-left: 3%;
+                display: grid;
+
+                #countdown{
+                    font-size: 30px;
+                    font-weight: bold;
+                    width: 100%;
+                    display: inline-block;
+                    padding-top: 2%;
+                }
+            }
+            #city-photo-container{
+                width: 33%;
+            }
+                img{
+                    width: 100%;
+                    max-width: 250px;
+                }
+
+            #trip-weather{
+                width: 100%;
+                padding-top: 3%;
+            }
 }
