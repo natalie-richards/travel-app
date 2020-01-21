@@ -1,0 +1,135 @@
+$primary-color: #00A9F0;
+$light: #fff;
+$headings: 'Yanone Kaffeesatz', sans-serif;
+$bodyfont: 'Open Sans', sans-serif;
+$cta: #C3CF0E;
+$mobile: 500px;
+$tablet: 800px;
+
+body {
+    min-height: 700px;
+    background-color: $light;
+    display: grid;
+    grid-template-rows: 60px 1fr 60px;
+    font-family: $bodyfont;
+    font-size: 18px;
+    @media screen and (max-width: $tablet){
+        grid-template-rows: 60px 1fr 1fr;
+    }
+
+    h1,
+    h2,
+    h3{
+        font-family: $headings;
+    }
+
+    h1{
+        font-size: 72px;
+        padding-top: 10%;
+        text-align:center;
+        color: $light;
+    }
+
+    h2{
+        font-size: 28px;
+    }
+
+    h3{
+        font-size: 24px; 
+    }
+
+    button{
+        background-color: $primary-color;
+        font-family: $headings;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 4px 10px;
+        color: #fff;
+    }
+
+
+    #content-container{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        background-image: url('http://i.imgur.com/sdn9qh0.jpg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        padding: 10% 0;
+    
+        #search{
+            width: 30%;
+            padding: 3%;
+            @media screen and (min-width: $mobile) and (max-width: $tablet){
+                width: 50%;
+            }
+            @media screen and (max-width: $mobile){
+                width: 100%;
+            }
+
+        }
+
+        #results{
+            padding: 3%;
+            width: 60%;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            @media screen and (min-width: $mobile) and (max-width: $tablet){
+                width: 50%;
+            }
+            @media screen and (max-width: $mobile){
+                width: 100%;
+            }
+
+            #note-button{
+                margin-top: 3%;
+            }
+        
+            #trip-details{             
+                padding-left: 3%;
+                display: grid;
+
+                #countdown{
+                    font-size: 30px;
+                    font-weight: bold;
+                    width: 100%;
+                    display: inline-block;
+                    padding-top: 2%;
+                }
+            }
+            #city-photo-container{
+                width: 33%;
+            }
+                img{
+                    width: 100%;
+                    max-width: 250px;
+                }
+
+            #trip-weather{
+                width: 100%;
+                padding-top: 3%;
+            }
+
+
+        #note-area{
+            padding-top: 3%;
+            width: 100%;
+
+                #list-area{
+                    .item-added{
+                        line-height: 1.5em;
+                        margin-top: 5px;
+                    }
+                    span.close{
+                        float: right;
+                        background-color: #efefef;
+                        padding: 0px 10px;
+                    }
+
+                }
+            }
+        }
+    }
+}

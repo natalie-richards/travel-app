@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Yanone+Kaffeesatz&display=swap" rel="stylesheet">
+        <title>My Trip Planner</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+    </head>
+
+    <body>
+
+        <header>
+            <div id="header-content">
+            <h3 style="text-align:center;">My Trip Planner</h3 id="placeholder">
+            </div>
+        </header>
+
+        <div id="content-container">
+
+        <section id="search">
+            <form id="text-input" onsubmit="return Client.apiCall(event)">
+                <input type="text" id="city-search" name="city-search" placeholder="City, State or Country">
+                <input type="date" id="date-search" name="date-search" value="2021-01-07">
+                <input id="search-button" type="submit" name="" value="Start a Trip">
+            </form>
+            
+        </section>
+        
+        <section id="results">
+            <h1 id="placeholder"> Plan Your Trip Today</h1>
+            <div id="city-photo-container"></div>
+            <div id ="trip-details">
+                <!-- <h2>We're going to...</h2> -->
+                <h2 id="destination"></h2>
+                <span id="trip-date"></span>
+                <span id="countdown"></span>
+            </div>
+            <div id ="trip-weather">
+                        <!-- <h2>The weather is typically...</h2> -->
+                        <span id="temp"></span>
+                </div>
+                <div id="note-area">
+                    <ul id="list-area"></ul>
+                </div>
+            </div>
+
+
+
+        </section>
+    </div>
+        <footer>
+
+        </footer>
+
+      <!-- <script>
+            // Check that service workers are supported
+            if ('serviceWorker' in navigator) {
+                // Use the window load event to keep the page load performant
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/service-worker.js');
+                });
+            }
+        </script> -->
+
+    </body>
+</html>
