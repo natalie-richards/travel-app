@@ -43,6 +43,7 @@
     "null-loader": "^3.0.0",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.1.2",
+    "supertest": "^4.0.2",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1",

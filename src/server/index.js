@@ -14,6 +14,7 @@ dotenv.config();
 // Start up an instance of app
 const app = express()
 
+
 // Cors for cross origin allowance
 app.use(cors())
 // to use json
@@ -25,6 +26,11 @@ app.use(bodyParser.urlencoded({
 
 // Initialize the main project folder
 app.use(express.static('dist'))
+
+app.get('/', function (req, res) {
+  res.sendFile('dist/index.html')
+})
+
 
 
 const cityResults = [];
@@ -78,20 +84,17 @@ const weatherResults = [];
     app.get('/getLongLat', getData) 
     function getData (req, res){
       res.send(cityResults);
-      console.log(cityResults);
+      // console.log(cityResults);
     }
 
     app.get('/getWeather', getWeatherData) 
     function getWeatherData (req, res){
       res.send(weatherResults);
-      console.log(weatherResults);
+      // console.log(weatherResults);
     }
 
 
 
-app.get('/', function (req, res) {
-    res.sendFile('dist/index.html')
-})
 
 // designates what port the app will listen to for incoming requests
 app.listen(8081, function () {
