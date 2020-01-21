@@ -8,7 +8,6 @@ let weatherData = [];
 
 function toUNIX(date){
     var convert = Date.parse(date);
-    console.log(convert/1000);
     return convert/1000;
 }
 
@@ -20,7 +19,6 @@ const getLongLat = async (geoNames, city, user)=>{
     try {
   
       const longLat = await res.json();
-      console.log(longLat)
         
       return longLat;
     }  catch(error) {
@@ -35,7 +33,6 @@ const getPic = async (city)=>{
     try {
   
       const picData = await res.json();
-      console.log(picData);
 
       let placeholder = document.getElementById('placeholder');
 
@@ -117,7 +114,6 @@ const getWeatherResponse = async ()=>{
         const fullData = await request.json();
 
         weatherData.unshift(fullData);
-        console.log(weatherData);
 
 
         let docTemp = document.getElementById('temp');
@@ -133,9 +129,11 @@ const getWeatherResponse = async ()=>{
 
 function addToDoList(){
     //add notes area with event listener
+ 
     let notesButton = document.createElement('button');
     notesButton.setAttribute('id', 'note-button');
     notesButton.innerHTML = "Add Acitivity List";
+    
     document.getElementById('results').append(notesButton);
 
     document.getElementById('note-button').addEventListener('click', showNotes);
@@ -148,10 +146,39 @@ function showNotes(e){
     document.getElementById('note-button').remove();
     
     var listEntry = document.createElement('form');
-    listEntry.setAttribute('id', 'list-area');
-    listEntry.innerHTML = '<input type="text" id="list-item" name="list-item" placeholder="To-do Item">';
+    listEntry.setAttribute('id', 'todo-form');
+    listEntry.innerHTML = '<input type="text" id="list-item" name="list-item" placeholder="To-do Item">' +
+                          '<input id="add-item" type="submit" name="" value="Add Item">';
     
     document.getElementById('note-area').append(listEntry);
+
+    document.getElementById('add-item').addEventListener('click', addItem);
+}
+
+function addItem(e){
+    e.preventDefault();
+
+    let itemToAdd = document.getElementById('list-item').value;
+    let listArea = document.getElementById('list-area');
+    let listItem = document.createElement('li');
+
+    listItem.setAttribute('class', 'item-added');
+
+    listItem.innerHTML = itemToAdd + '<span class="close">×</span>';
+
+    listArea.append(listItem);
+
+
+    let nodeList = document.getElementsByClassName('close');
+
+        for(let i = 0 ; i < nodeList.length ; i++) {
+            nodeList[i].onclick = function() {
+                var x = this.parentElement;
+                x.style.display = "none";
+              }
+
+        }
+
 }
 
 
@@ -164,9 +191,8 @@ function apiCall(event) {
     let date = document.getElementById('date-search').value;
     let timeStamp = toUNIX(date);
 
- 
-    // console.log(citySearch);
     getPic(citySearch)
+    
     getLongLat(geoNames, citySearch, userName)
  
         
